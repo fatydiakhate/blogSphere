@@ -2,15 +2,20 @@ const express = require("express");
 const cors = require("cors");
 require('dotenv').config();
 const connectDB = require("./config/db");
+const authRoutes = require("./routes/AuthRoutes");
 
 const app = express();
 
 // Connect DB
 connectDB();
 
-//Middlewares
+//Middlewares et cors
 app.use(cors());
 app.use(express.json());
+
+//Importation des routes
+app.use("/api/auth", authRoutes);
+
 
 //Routes
 app.get("/",(req,res)=>{
