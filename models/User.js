@@ -20,8 +20,17 @@ const userSchema = new mongoose.Schema({
   role: {
     type: String,
     enum: ['adim', 'author', 'reader'],
-    default: 'reader',
+    default: '',
   },
+  profileImage: {
+    type: String,
+    default: "" 
+  },
+  bio: {
+  type: String,
+  default: ""
+},
+
   createdAt: {
     type: Date,
     default: Date.now // Example of a default value

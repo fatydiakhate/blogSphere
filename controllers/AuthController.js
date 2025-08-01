@@ -75,6 +75,43 @@ exports.profile = async (req, res) => {
         res.status(401).json({ error: "Accès non autorisé" });
     }
 };
+// Mise à jour du profile
+exports.updateProfile = async (req, res) => {
+  try {
+    // Authentification via token dans l'en-tête
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ error: "Token manquant ou invalide" });
+    }
+
+    const token = authHeader.split(" ")[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const user = await User.findById(decoded.userId);
+    if (!user) {
+      return res.status(404).json({ error: "Utilisateur non trouvé" });
+    }
+
+    // Mise à jour des champs (si fournis dans req.body)
+    const { name, email, password,profileImage,bio } = req.body;
+    if (name) user.name = name;
+    if (email) user.email = email;
+    if (password) user.password = password; // sera re-hashé grâce au hook pre('save')
+    if (profileImage) user.profileImage = profileImage;
+    if (bio) user.bio = bio;
+
+    await user.save();
+
+    res.status(200).json({ message: "Profil mis à jour avec succès" });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
 
 //Deconnexion
+// Déconnexion (optionnelle côté serveur)
+exports.logout = (req, res) => {
+  res.status(200).json({ message: "Déconnexion réussie" });
+};
+
 // Delete Compte

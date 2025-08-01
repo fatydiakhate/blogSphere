@@ -28,4 +28,9 @@ app.listen(PORT, ()=>{
     console.log(`🚀 Serveur démarré sur le port ${PORT}`);
 });
 
-
+//profil
+app.get('/api/profile', async (req, res) => {
+  try {
+      const userId = req.headers['user-id']
+  } catch (err) {}
+  });
