@@ -3,6 +3,9 @@ const cors = require("cors");
 require('dotenv').config();
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/AuthRoutes");
+const articleRoutes = require("./routes/ArticleRoutes");
+const commentRoutes = require("./routes/CommentRoutes");
+const categoryRoutes = require("./routes/CategoryRoutes");
 
 const app = express();
 
@@ -15,6 +18,11 @@ app.use(express.json());
 
 //Importation des routes
 app.use("/api/auth", authRoutes);
+app.use("/api/articles", articleRoutes);
+app.use("/api/comments", commentRoutes);
+app.use("/api/categories", categoryRoutes);
+app.use("/uploads", express.static("uploads")); // ✅ Sert les images statiques
+
 
 
 //Routes

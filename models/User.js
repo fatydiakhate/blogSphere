@@ -17,11 +17,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  role: {
-    type: String,
-    enum: ['adim', 'author', 'reader'],
-    default: '',
-  },
+  // role: {
+  //   type: String,
+  //   enum: ['adim', 'author', 'reader'],
+  //   default: '',
+  // },
   profileImage: {
     type: String,
     default: "" 

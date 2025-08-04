@@ -1,27 +1,28 @@
-// const jwt = require("jsonwebtoken");
-// const User = require("../models/User");
+const jwt = require("jsonwebtoken");
+const User = require("../models/User");
 
-// const auth = async (req, res, next) => {
-//   try {
-//     const authHeader = req.headers.authorization;
+const auth = async (req, res, next) => {
+  try {
+    const authHeader = req.headers.authorization;
 
-//     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-//       return res.status(401).json({ error: "Token manquant ou invalide" });
-//     }
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ error: "Token manquant ou invalide" });
+    }
 
-//     const token = authHeader.split(" ")[1];
-//     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const token = authHeader.split(" ")[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-//     const user = await User.findById(decoded.userId).select("-password");
-//     if (!user) {
-//       return res.status(404).json({ error: "Utilisateur introuvable" });
-//     }
+    const user = await User.findById(decoded.userId).select("-password");
+    if (!user) {
+      return res.status(404).json({ error: "Utilisateur introuvable" });
+    }
 
-//     req.user = user;
-//     next();
-//   } catch (err) {
-//     res.status(401).json({ error: "Accès non autorisé" });
-//   }
-// };
+    req.user = user;
 
-// module.exports = auth;
+    next();
+  } catch (err) {
+    res.status(401).json({ error: "Accès non autorisé" });
+  }
+};
+
+module.exports = auth;
