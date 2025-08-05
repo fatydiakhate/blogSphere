@@ -102,11 +102,13 @@ exports.updateProfile = async (req, res) => {
 
     await user.save();
 
-    res.status(200).json({ message: "Profil mis à jour avec succès" });
+    const updatedUser = await User.findById(user._id).select("-password");
+    res.status(200).json({ user: updatedUser });;
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 };
+
 
 //Deconnexion
 // Déconnexion (optionnelle côté serveur)

@@ -32,6 +32,11 @@ status: {
 likes: [{ type: mongoose.Schema.Types.ObjectId, 
     ref: "User" 
 }],
+views: {
+  type: Number,
+  default: 0
+},
+
 dislikes: [
   {
     type: mongoose.Schema.Types.ObjectId,
@@ -42,7 +47,7 @@ dislikes: [
 category: {
   type: String,
   required: true,
-  enum: ["Technologie", "Santé", "Éducation", "Business", "Lifestyle"], // à adapter selon ton projet
+  enum: ["Technologie", "Santé", "Education", "Business", "Lifestyle"], // à adapter selon ton projet
 },
 createdAt: { type: Date, 
 default: Date.now 

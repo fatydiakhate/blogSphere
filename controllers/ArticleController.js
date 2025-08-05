@@ -19,7 +19,7 @@ exports.createArticle = async (req, res) => {
 
     await article.save();
 
-    res.status(201).json({ message: "Article créé avec succès", article });
+    res.status(201).json({ message: "Article créé avec succès 📝", article });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -44,6 +44,9 @@ exports.getArticleById = async (req, res) => {
     const article = await Article.findById(req.params.id)
       .populate("author", "username")
       .exec();
+      article.views += 1;
+      await article.save();
+
 
     if (!article) {
       return res.status(404).json({ error: "Article introuvable" });
@@ -133,7 +136,7 @@ exports.likeArticle = async (req, res) => {
 
     await article.save();
 
-    res.json({ message: "Article liké avec succès", likes: article.likes.length });
+    res.json({ message: "Article liké avec succès ❤️", likes: article.likes.length });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -158,7 +161,7 @@ exports.dislikeArticle = async (req, res) => {
 
     await article.save();
 
-    res.json({ message: "Article disliké avec succès", dislikes: article.dislikes.length });
+    res.json({ message: "Article disliké avec succès👎", dislikes: article.dislikes.length });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

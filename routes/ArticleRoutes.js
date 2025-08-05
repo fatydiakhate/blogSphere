@@ -6,6 +6,9 @@ const articleController = require("../controllers/ArticleController");
 // Créer un article (brouillon ou publié)
 router.post("/ajouter", auth, articleController.createArticle);
 
+// Recupere tous les articles
+router.get("/allArticles", auth, articleController.getAllArticles);
+
 // Modifier un article
 router.put("/:id", auth, articleController.updateArticle);
 
