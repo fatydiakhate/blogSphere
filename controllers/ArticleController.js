@@ -1,18 +1,16 @@
 const Article = require("../models/Article");
-const User = require("../models/User");
 const Comment = require("../models/Comment");
 
 // Créer un article
 exports.createArticle = async (req, res) => {
   try {
     const authorId = req.user._id.toString();
-    const { title, content, image, isDraft } = req.body;
+    const { title, content, isDraft } = req.body;
 
     const article = new Article({
       title,
       content,
-      coverImage: image,
-      isDraft: isDraft ?? true,
+      isDraft: isDraft ?? true, // par défaut : true
       author: authorId,
     });
 
@@ -23,6 +21,7 @@ exports.createArticle = async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 };
+
 
 // Récupérer tous les articles
 exports.getAllArticles = async (req, res) => {
