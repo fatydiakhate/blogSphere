@@ -6,14 +6,13 @@ const Comment = require("../models/Comment");
 exports.createArticle = async (req, res) => {
   try {
     const authorId = req.user._id.toString();
-    const { title, content, image, isDraft, category } = req.body;
+    const { title, content, image, isDraft } = req.body;
 
     const article = new Article({
       title,
       content,
       coverImage: image,
       isDraft: isDraft ?? true,
-      category,
       author: authorId,
     });
 
@@ -70,7 +69,7 @@ exports.getArticleById = async (req, res) => {
 exports.updateArticle = async (req, res) => {
   try {
     const userId = req.user._id.toString();
-    const { title, content, image, isDraft, category } = req.body;
+    const { title, content, image, isDraft } = req.body;
 
     const article = await Article.findById(req.params.id);
 
@@ -86,7 +85,6 @@ exports.updateArticle = async (req, res) => {
     article.content = content ?? article.content;
     article.coverImage = image ?? article.coverImage;
     article.isDraft = isDraft ?? article.isDraft;
-    article.category = category ?? article.category;
 
     await article.save();
 
@@ -175,29 +173,6 @@ exports.getLatestArticles = async (req, res) => {
       .populate("author", "username")
       .sort({ createdAt: -1 })
       .limit(10);
-
-    res.json(articles);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
-// Rechercher / filtrer les articles
-exports.getArticlesByFilters = async (req, res) => {
-  try {
-    const { keyword, category } = req.query;
-    const filters = { isDraft: false };
-
-    if (keyword) {
-      filters.title = { $regex: keyword, $options: "i" };
-    }
-    if (category) {
-      filters.category = category;
-    }
-
-    const articles = await Article.find(filters)
-      .populate("author", "username")
-      .sort({ createdAt: -1 });
 
     res.json(articles);
   } catch (err) {

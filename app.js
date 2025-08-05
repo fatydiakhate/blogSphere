@@ -21,9 +21,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/articles", articleRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/categories", categoryRoutes);
-app.use("/uploads", express.static("uploads")); // ✅ Sert les images statiques
-
-
+app.use("/uploads", express.static("uploads"));
 
 //Routes
 app.get("/",(req,res)=>{

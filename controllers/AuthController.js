@@ -46,7 +46,7 @@ exports.login = async (req, res) => {
             { expiresIn: "1h" }
         );
 
-        res.status(200).json({message: "Connexion réussie", token});
+        res.status(200).json({message: "Connexion réussie", token, name: user.name, email: user.email});
     }catch (err){
         res.status(400).json({error: err.message });
     }

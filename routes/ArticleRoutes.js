@@ -18,9 +18,6 @@ router.delete("/:id", auth, articleController.deleteArticle);
 // Derniers articles publiés
 router.get("/", articleController.getLatestArticles);
 
-// Rechercher ou filtrer
-router.get("/search", articleController.getArticlesByFilters);
-
 // Voir les articles publics d’un auteur
 router.get("/author/:authorId", articleController.getArticlesByAuthor);
 
