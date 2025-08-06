@@ -6,17 +6,24 @@ exports.createArticle = async (req, res) => {
   try {
     const authorId = req.user._id.toString();
     const { title, content, isDraft } = req.body;
-
+    
     const article = new Article({
       title,
       content,
-      isDraft: isDraft ?? true, // par défaut : true
+      isDraft: isDraft ?? true,
       author: authorId,
     });
 
     await article.save();
 
-    res.status(201).json({ message: "Article créé avec succès 📝", article });
+    res.status(201).json({ message: "Article créé avec succès 📝", article: {
+        ...article.toObject(),
+        author: {
+          _id: req.user._id,
+          name: req.user.name,
+        },
+      }, 
+    });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -27,7 +34,7 @@ exports.createArticle = async (req, res) => {
 exports.getAllArticles = async (req, res) => {
   try {
     const articles = await Article.find()
-      .populate("author", "username")
+      .populate("author", "name")
       .sort({ createdAt: -1 });
 
     res.json(articles);
@@ -40,7 +47,7 @@ exports.getAllArticles = async (req, res) => {
 exports.getArticleById = async (req, res) => {
   try {
     const article = await Article.findById(req.params.id)
-      .populate("author", "username")
+      .populate("author", "name")
       .exec();
       article.views += 1;
       await article.save();
@@ -50,7 +57,7 @@ exports.getArticleById = async (req, res) => {
       return res.status(404).json({ error: "Article introuvable" });
     }
     const comments = await Comment.find({ article: article._id })
-      .populate("author", "username photo")
+      .populate("author", "name photo")
       .sort({ createdAt: -1 });
 
     res.json({
@@ -169,7 +176,7 @@ exports.dislikeArticle = async (req, res) => {
 exports.getLatestArticles = async (req, res) => {
   try {
     const articles = await Article.find({ isDraft: false })
-      .populate("author", "username")
+      .populate("author", "name")
       .sort({ createdAt: -1 })
       .limit(10);
 
@@ -185,7 +192,7 @@ exports.getArticlesByAuthor = async (req, res) => {
     const authorId = req.params.authorId;
 
     const articles = await Article.find({ author: authorId, isDraft: false })
-      .populate("author", "username")
+      .populate("author", "name")
       .sort({ createdAt: -1 });
 
     res.json(articles);

@@ -5,7 +5,8 @@ const connectDB = require("./config/db");
 const authRoutes = require("./routes/AuthRoutes");
 const articleRoutes = require("./routes/ArticleRoutes");
 const commentRoutes = require("./routes/CommentRoutes");
-const categoryRoutes = require("./routes/CategoryRoutes");
+
+// const categoryRoutes = require("./routes/CategoryRoutes");
 
 const app = express();
 
@@ -20,7 +21,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/articles", articleRoutes);
 app.use("/api/comments", commentRoutes);
-app.use("/api/categories", categoryRoutes);
+// app.use("/api/categories", categoryRoutes);
 app.use("/uploads", express.static("uploads"));
 
 //Routes
