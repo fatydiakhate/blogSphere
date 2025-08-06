@@ -102,8 +102,8 @@ exports.updateProfile = async (req, res) => {
 
     await user.save();
 
-    const updatedUser = await User.findById(user._id).select("-password");
-    res.status(200).json({ user: updatedUser });;
+    res.status(200).json({ message: "Profil mis à jour avec succès" });
+
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
