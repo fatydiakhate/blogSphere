@@ -6,23 +6,23 @@ exports.createArticle = async (req, res) => {
   try {
     const authorId = req.user._id.toString();
     const { title, content, isDraft } = req.body;
-    
+    const coverImage = req.file ? req.file.path : null; // récupérer le chemin du fichier
     const article = new Article({
       title,
       content,
+      coverImage, // utiliser l'image uploadée
       isDraft: isDraft ?? true,
       author: authorId,
     });
 
     await article.save();
-
-    res.status(201).json({ message: "Article créé avec succès 📝", article: {
-        ...article.toObject(),
-        author: {
-          _id: req.user._id,
-          name: req.user.name,
-        },
-      }, 
+    const articleObj = article.toObject();
+    articleObj.author = {
+      _id: req.user._id,
+      name: req.user.name,
+    };
+    res.status(201).json({ message: "Article créé avec succès 📝", article:
+        articleObj,
     });
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -76,6 +76,7 @@ exports.updateArticle = async (req, res) => {
   try {
     const userId = req.user._id.toString();
     const { title, content, image, isDraft } = req.body;
+    const coverImage = req.file ? req.file.path : null;
 
     const article = await Article.findById(req.params.id);
 

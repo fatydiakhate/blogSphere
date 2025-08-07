@@ -2,15 +2,16 @@ const express = require("express");
 const router = express.Router();
 const auth = require("../middleware/auth");
 const articleController = require("../controllers/ArticleController");
+const upload = require("../middleware/upload");
 
 // Créer un article (brouillon ou publié)
-router.post("/ajouter", auth, articleController.createArticle);
+router.post("/creer", upload.single('coverImage'), auth, articleController.createArticle);
 
 // Recupere tous les articles
 router.get("/allArticles", auth, articleController.getAllArticles);
 
 // Modifier un article
-router.put("/:id", auth, articleController.updateArticle);
+router.put('/:id', upload.single('coverImage'), auth, articleController.updateArticle);
 
 // Supprimer un article
 router.delete("/:id", auth, articleController.deleteArticle);

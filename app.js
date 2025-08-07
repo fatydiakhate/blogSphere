@@ -5,6 +5,8 @@ const connectDB = require("./config/db");
 const authRoutes = require("./routes/AuthRoutes");
 const articleRoutes = require("./routes/ArticleRoutes");
 const commentRoutes = require("./routes/CommentRoutes");
+const multer = require('multer');
+const path = require('path');
 
 // const categoryRoutes = require("./routes/CategoryRoutes");
 
@@ -41,3 +43,13 @@ app.get('/api/profile', async (req, res) => {
       const userId = req.headers['user-id']
   } catch (err) {}
   });
+// Configuration de Multer pour l'upload des fichiers
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, 'uploads/'); // le dossier d'upload
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, Date.now() + path.extname(file.originalname)); // ajout d'un timestamp pour éviter les conflits
+//   }
+// });
+// const upload = multer({ storage: storage });
